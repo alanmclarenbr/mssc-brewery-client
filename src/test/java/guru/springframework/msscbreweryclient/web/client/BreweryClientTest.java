@@ -2,7 +2,6 @@ package guru.springframework.msscbreweryclient.web.client;
 
 import guru.springframework.msscbreweryclient.web.model.BeerDto;
 import guru.springframework.msscbreweryclient.web.model.CustomerDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.net.URI;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class BreweryClientTest {
@@ -27,17 +26,26 @@ class BreweryClientTest {
 
     @Test
     void saveNewBeer() {
-        URI uri = client.saveNewBeer(BeerDto.builder().build());
+        URI uri = client.saveNewBeer(BeerDto.builder()
+                .id(UUID.randomUUID())
+                .beerName("ABC")
+                .beerStyle("CDE")
+                .upc(12)
+                .build());
 
         assertThat(uri).isNotNull();
-        System.out.println(uri);
     }
 
     @Test
     void updateBeer() {
-        BeerDto newBeer = BeerDto.builder().beerName("New Beer").build();
+        BeerDto newBeer = BeerDto.builder()
+                .id(UUID.randomUUID())
+                .beerName("ABC")
+                .beerStyle("CDE")
+                .upc(12)
+                .build();
 
-        client.updateBeer(UUID.randomUUID(), newBeer);
+        client.updateBeer(newBeer.getId(), newBeer);
     }
 
     @Test
@@ -54,7 +62,10 @@ class BreweryClientTest {
 
     @Test
     void saveNewCustomer() {
-        URI uri = client.saveNewCustomer(CustomerDto.builder().build());
+        URI uri = client.saveNewCustomer(CustomerDto.builder()
+                .id(UUID.randomUUID())
+                .name("ABCD")
+                .build());
 
         assertThat(uri).isNotNull();
         System.out.println(uri);
